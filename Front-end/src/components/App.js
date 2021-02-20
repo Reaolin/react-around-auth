@@ -11,9 +11,10 @@ import Register from "./Register";
 //import DeleteCard from "./DeleteCard";
 import api from "../utils/api";
 import { UserContext } from "../contexts/CurrentUserContext";
-import { Link, Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoToolTip from "./InfoToolTip";
+import * as auth from "../utils/auth";
 
 function App() {
 	//create 'state' variables
@@ -23,8 +24,13 @@ function App() {
 	const [isAddPlaceOpen, setIsAddPlaceOpen] = React.useState(false);
 	//const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
 	const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-	const [isInfoToolTipOpen, setIsInfoToolTipOpen] =React.useState(false);
-	//const [isSuccessful, setIsSuccessful] = React.useState(false);
+	
+	
+	const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
+	const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+	const [isSuccessful, setIsSuccessful] = React.useState(false);
+
+	const [email, setEmail] = React.useState("");
 	const [cardLink, setCardLink] = React.useState("");
 	const [cardTitle, setCardTitle] = React.useState("");
 	const [currentUser, setCurrentUser] = React.useState("");
@@ -149,23 +155,94 @@ function App() {
 			.catch((err) => console.log(err));
 	}
 
-	
+	// Authorization Handlers
+	const history = useHistory();
+
+	function handleCheckToken() {
+		const jwt = localStorage.getItem("jwt");
+		if (jwt) {
+			auth
+				.checkToken(jwt)
+				.then((res) => {
+					if (res.err) {
+						console.log("Error Error!");
+					}
+					setIsLoggedIn(true);
+					setEmail(res.data.email);
+				})
+				.catch((err) => console.log(err));
+		}
+	}
+
+	React.useEffect(() => {
+		handleCheckToken();
+		history.push("/");
+	}, [history]);
+
+	function handleRegistration(email, password) {
+		auth
+			.register(email, password)
+			.then((res) => {
+				if (res.err || !res) {
+					setIsSuccessful(false);
+					setIsInfoToolTipOpen(true);
+				} else {
+					setIsSuccessful(true);
+					setIsInfoToolTipOpen(true);
+					history.push("/signin");
+				}
+			})
+			.catch((err) => console.log(err));
+	}
+
+	function handleLogin(email, password) {
+		auth
+			.authorize(email, password)
+			.then((res) => {
+				if (!res) {
+					console.log(res.error);
+					setIsSuccessful(false);
+					setIsInfoToolTipOpen(true);
+				}
+				if (res.err) {
+					console.log(res.error);
+					setIsSuccessful(false);
+					setIsInfoToolTipOpen(true);
+				}
+				handleCheckToken();
+			})
+			.catch((err) => {
+				console.log(err);
+				setIsSuccessful(false);
+				setIsInfoToolTipOpen(true);
+			});
+	}
+	function handleSignout() {
+		localStorage.removeItem("jwt");
+		setIsLoggedIn(false);
+		setEmail("");
+		history.push("/signin");
+	}
 
 	return (
 		<div>
 			<UserContext.Provider value={currentUser}>
-				<Header />
 				<Switch>
 					<Route path="/signin">
-						<Login />
+						<Header link={"/signup"} text={"Register"} />
+						<Login handleLogin={handleLogin} />
 					</Route>
 					<Route path="/signup">
-						<Register />
+						<Header link={"/signin"} text={"Login"} />
+						<Register handleRegistration={handleRegistration} />
 					</Route>
 
 					<ProtectedRoute
 						path="/"
 						component={Main}
+						isLoggedIn={isLoggedIn}
+						onClick={handleSignout}
+						email={email}
 						cards={cards}
 						handleEditAvatarClick={handleEditAvatarClick}
 						handleEditProfileClick={handleEditProfileClick}
@@ -214,7 +291,7 @@ function App() {
 				<InfoToolTip
 					isOpen={isInfoToolTipOpen}
 					onClose={handlePopupClose}
-					//valid={isSuccessful}
+					valid={isSuccessful}
 				/>
 				{/*Delete Popup*/}
 				{/*<DeleteCard isOpen={isDeleteOpen} onClose={handlePopupClose} onDeleteCard={handleCardDelete}/>*/}
