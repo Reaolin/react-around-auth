@@ -162,7 +162,7 @@ function App() {
 		console.log(email, password);
 		auth
 			.register(email, password)
-			.then((res) => {
+			.then((res) => {console.log(res);
 				if (res.statusCode === 400 || !res) {
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
@@ -194,7 +194,7 @@ function App() {
 	React.useEffect(() => {
 		handleCheckToken();
 		history.push("/");
-	}, [history]);
+	}, []);
 
 	function handleLogin(email, password) {
 		auth

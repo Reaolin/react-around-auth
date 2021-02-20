@@ -16,7 +16,7 @@ function Register ({handleRegistration}) {
     if (localStorage.getItem('jwt')) {
       history.push('/');
     }
-  }, [history])
+  }, [])
 
   return (
     <div className="login">

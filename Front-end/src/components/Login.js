@@ -18,7 +18,7 @@ function Login ({handleLogin}) {
       if(localStorage.getItem('jwt')) {
         history.push('/');
       }
-    }, [history])
+    }, [])
   
   
   
