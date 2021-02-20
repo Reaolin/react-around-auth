@@ -24,8 +24,7 @@ function App() {
 	const [isAddPlaceOpen, setIsAddPlaceOpen] = React.useState(false);
 	//const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
 	const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-	
-	
+
 	const [isInfoToolTipOpen, setIsInfoToolTipOpen] = React.useState(false);
 	const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 	const [isSuccessful, setIsSuccessful] = React.useState(false);
@@ -67,7 +66,7 @@ function App() {
 		setIsInfoToolTipOpen(false);
 		//	setIsDeleteOpen(false);
 	}
-const history = useHistory();
+	const history = useHistory();
 
 	//Calls the users info
 	React.useEffect(() => {
@@ -167,7 +166,8 @@ const history = useHistory();
 		console.log(email, password);
 		auth
 			.register(email, password)
-			.then((res) => {console.log(res);
+			.then((res) => {
+				console.log(res);
 				if (res.statusCode === 400 || !res) {
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
@@ -190,12 +190,12 @@ const history = useHistory();
 						console.log(res.err);
 					}
 					setIsLoggedIn(true);
+					setIsSuccessful(true);
 					setEmail(res.data.email);
 				})
 				.catch((err) => console.log(err));
 		}
 	}
-
 
 	function handleLogin(email, password) {
 		auth
@@ -206,8 +206,9 @@ const history = useHistory();
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
 				}
-				
+
 				handleCheckToken();
+				history.push("/");
 			})
 			.catch((err) => {
 				console.log(err);
