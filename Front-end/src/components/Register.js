@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 function Register ({handleRegistration}) {
@@ -10,13 +10,12 @@ function Register ({handleRegistration}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleRegistration(email, password);
-  }
-
-  useEffect(() => {
     if (localStorage.getItem('jwt')) {
       history.push('/');
     }
-  }, [])
+  }
+
+ 
 
   return (
     <div className="login">

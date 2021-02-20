@@ -67,8 +67,14 @@ function App() {
 		setIsInfoToolTipOpen(false);
 		//	setIsDeleteOpen(false);
 	}
+const history = useHistory();
 
 	//Calls the users info
+	React.useEffect(() => {
+		handleCheckToken();
+		history.push("/");
+	}, [history]);
+
 	React.useEffect(() => {
 		api
 			.getUserInfo()
@@ -156,7 +162,6 @@ function App() {
 	}
 
 	// Authorization Handlers
-	const history = useHistory();
 
 	function handleRegistration(email, password) {
 		console.log(email, password);
@@ -182,7 +187,7 @@ function App() {
 				.checkToken(jwt)
 				.then((res) => {
 					if (res.err) {
-						console.log("Error Error!");
+						console.log(res.err);
 					}
 					setIsLoggedIn(true);
 					setEmail(res.data.email);
@@ -191,10 +196,6 @@ function App() {
 		}
 	}
 
-	React.useEffect(() => {
-		handleCheckToken();
-		history.push("/");
-	}, []);
 
 	function handleLogin(email, password) {
 		auth

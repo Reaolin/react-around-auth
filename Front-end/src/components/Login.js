@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 import { Link, useHistory} from 'react-router-dom'
 
 function Login ({handleLogin}) {
@@ -12,14 +12,10 @@ function Login ({handleLogin}) {
       e.preventDefault();
       console.log(username, password);
       handleLogin(username, password);
-    }
-  
-    useEffect(() => {
       if(localStorage.getItem('jwt')) {
         history.push('/');
       }
-    }, [])
-  
+    }
   
   
     return (
