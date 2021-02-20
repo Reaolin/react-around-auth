@@ -158,6 +158,23 @@ function App() {
 	// Authorization Handlers
 	const history = useHistory();
 
+	function handleRegistration(email, password) {
+		console.log(email, password);
+		auth
+			.register(email, password)
+			.then((res) => {
+				if (res.statusCode === 400 || !res) {
+					setIsSuccessful(false);
+					setIsInfoToolTipOpen(true);
+				} else {
+					setIsSuccessful(true);
+					setIsInfoToolTipOpen(true);
+					history.push("/signin");
+				}
+			})
+			.catch((err) => console.log(err));
+	}
+
 	function handleCheckToken() {
 		const jwt = localStorage.getItem("jwt");
 		if (jwt) {
@@ -179,37 +196,16 @@ function App() {
 		history.push("/");
 	}, [history]);
 
-	function handleRegistration(email, password) {
-		console.log(email, password);
-		auth
-			.register(email, password)
-			.then((res) => {
-				if (res.err || !res) {
-					setIsSuccessful(false);
-					setIsInfoToolTipOpen(true);
-				} else {
-					setIsSuccessful(true);
-					setIsInfoToolTipOpen(true);
-					history.push("/signin");
-				}
-			})
-			.catch((err) => console.log(err));
-	}
-
 	function handleLogin(email, password) {
 		auth
 			.authorize(email, password)
 			.then((res) => {
 				if (!res) {
-					console.log(res.error);
+					console.log(!res);
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
 				}
-				if (res.err) {
-					console.log(res.error);
-					setIsSuccessful(false);
-					setIsInfoToolTipOpen(true);
-				}
+				
 				handleCheckToken();
 			})
 			.catch((err) => {
