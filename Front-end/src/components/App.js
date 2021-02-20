@@ -180,6 +180,7 @@ function App() {
 	}, [history]);
 
 	function handleRegistration(email, password) {
+		console.log(email, password);
 		auth
 			.register(email, password)
 			.then((res) => {

@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import { Link, useHistory} from 'react-router-dom'
 
-function Login (props) {
+function Login ({handleLogin}) {
 
     const [ username, setUsername] = useState('');
     const [ password, setPassword ] = useState('');
@@ -11,7 +11,7 @@ function Login (props) {
     function handleSubmit(e) {
       e.preventDefault();
       console.log(username, password);
-      props.handleLogin(username, password);
+      handleLogin(username, password);
     }
   
     useEffect(() => {

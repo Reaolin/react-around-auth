@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-function Register (props) {
+function Register ({handleRegistration}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
@@ -9,7 +9,7 @@ function Register (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.handleRegistration(email, password);
+    handleRegistration(email, password);
   }
 
   useEffect(() => {
