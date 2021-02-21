@@ -45,9 +45,7 @@ function App() {
 	function handleAddPlaceClick() {
 		setIsAddPlaceOpen(true);
 	}
-	function handleEmailChange(e) {
-		setEmail(e.target.value);
-	}
+
 
 	//function handleDeleteClick() {
 	//	setIsDeleteOpen(true);
