@@ -227,6 +227,15 @@ function App() {
 		<div>
 			<UserContext.Provider value={currentUser}>
 				<Switch>
+
+				<Route path="/signin">
+						<Header link={"/signup"} text={"Register"} />
+						<Login handleLogin={handleLogin} />
+					</Route>
+					<Route path="/signup">
+						<Header link={"/signin"} text={"Login"} />
+						<Register handleRegistration={handleRegistration} />
+					</Route>
 					<ProtectedRoute
 						path="/"
 						component={Main}
@@ -251,17 +260,10 @@ function App() {
 						handleCardLike={handleCardLike}
 						handleCardDelete={handleCardDelete}
 					/>
-					<Route exact path="/signin">
-						<Header link={"/signup"} text={"Register"} />
-						<Login handleLogin={handleLogin} />
-					</Route>
-					<Route exact path="/signup">
-						<Header link={"/signin"} text={"Login"} />
-						<Register handleRegistration={handleRegistration} />
-					</Route>
-					<Route path="*">
+									<Route path="*">
 						<Redirect to="./signin" />
 					</Route>
+					
 				</Switch>
 				<Footer />
 				{/*Add Card Component*/}
