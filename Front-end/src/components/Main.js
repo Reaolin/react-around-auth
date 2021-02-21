@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "./Card";
 import { UserContext } from "../contexts/CurrentUserContext";
+import Header from './Header';
 
 function Main(props) {
 	const currentUser = React.useContext(UserContext);
@@ -12,7 +13,9 @@ function Main(props) {
 
 
 	return (
+		
 		<main className="main">
+		<Header text={"signout"} onClick={props.handleSignOut}>{props.email}</Header>
 			<section className="profile">
 				<div className="profile__avatar-container">
 					<img

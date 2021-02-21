@@ -11,7 +11,7 @@ import Register from "./Register";
 //import DeleteCard from "./DeleteCard";
 import api from "../utils/api";
 import { UserContext } from "../contexts/CurrentUserContext";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route, useHistory, Redirect } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoToolTip from "./InfoToolTip";
 import * as auth from "../utils/auth";
@@ -216,7 +216,7 @@ function App() {
 				setIsInfoToolTipOpen(true);
 			});
 	}
-	function handleSignout() {
+	function handleSignOut() {
 		localStorage.removeItem("jwt");
 		setIsLoggedIn(false);
 		setEmail("");
@@ -227,20 +227,11 @@ function App() {
 		<div>
 			<UserContext.Provider value={currentUser}>
 				<Switch>
-					<Route path="/signin">
-						<Header link={"/signup"} text={"Register"} />
-						<Login handleLogin={handleLogin} />
-					</Route>
-					<Route path="/signup">
-						<Header link={"/signin"} text={"Login"} />
-						<Register handleRegistration={handleRegistration} />
-					</Route>
-
 					<ProtectedRoute
 						path="/"
 						component={Main}
 						isLoggedIn={isLoggedIn}
-						onClick={handleSignout}
+						handleSignOut={handleSignOut}
 						email={email}
 						cards={cards}
 						handleEditAvatarClick={handleEditAvatarClick}
@@ -260,6 +251,17 @@ function App() {
 						handleCardLike={handleCardLike}
 						handleCardDelete={handleCardDelete}
 					/>
+					<Route exact path="/signin">
+						<Header link={"/signup"} text={"Register"} />
+						<Login handleLogin={handleLogin} />
+					</Route>
+					<Route exact path="/signup">
+						<Header link={"/signin"} text={"Login"} />
+						<Register handleRegistration={handleRegistration} />
+					</Route>
+					<Route path="*">
+						<Redirect to="./signin" />
+					</Route>
 				</Switch>
 				<Footer />
 				{/*Add Card Component*/}
