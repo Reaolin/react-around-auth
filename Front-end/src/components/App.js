@@ -11,7 +11,7 @@ import Register from "./Register";
 //import DeleteCard from "./DeleteCard";
 import api from "../utils/api";
 import { UserContext } from "../contexts/CurrentUserContext";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoToolTip from "./InfoToolTip";
 import * as auth from "../utils/auth";
@@ -29,7 +29,7 @@ function App() {
 	const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 	const [isSuccessful, setIsSuccessful] = React.useState(false);
 
-	const [email, setEmail] = React.useState("");
+	const [userEmail, setEmail] = React.useState("test");
 	const [cardLink, setCardLink] = React.useState("");
 	const [cardTitle, setCardTitle] = React.useState("");
 	const [currentUser, setCurrentUser] = React.useState("");
@@ -44,6 +44,9 @@ function App() {
 	}
 	function handleAddPlaceClick() {
 		setIsAddPlaceOpen(true);
+	}
+	function handleEmailChange(e) {
+		setEmail(e.target.value);
 	}
 
 	//function handleDeleteClick() {
@@ -70,7 +73,23 @@ function App() {
 
 	//Calls the users info
 	React.useEffect(() => {
-		handleCheckToken();
+			const jwt = localStorage.getItem("jwt");
+			if (jwt) {
+				auth
+					.checkToken(jwt)
+					.then((res) => {
+						if (res.err) {
+							console.log(res.err);
+						}
+						setEmail(res.data.email);
+						setIsLoggedIn(true);
+						setIsSuccessful(true);
+						history.push('/');
+						
+					})
+					.catch((err) => console.log(err));
+			}
+		
 		history.push("/");
 	}, [history]);
 
@@ -174,28 +193,14 @@ function App() {
 				} else {
 					setIsSuccessful(true);
 					setIsInfoToolTipOpen(true);
+					setEmail(email);
 					history.push("/signin");
 				}
 			})
 			.catch((err) => console.log(err));
 	}
 
-	function handleCheckToken() {
-		const jwt = localStorage.getItem("jwt");
-		if (jwt) {
-			auth
-				.checkToken(jwt)
-				.then((res) => {
-					if (res.err) {
-						console.log(res.err);
-					}
-					setIsLoggedIn(true);
-					setIsSuccessful(true);
-					setEmail(res.data.email);
-				})
-				.catch((err) => console.log(err));
-		}
-	}
+
 
 	function handleLogin(email, password) {
 		auth
@@ -206,8 +211,7 @@ function App() {
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
 				}
-
-				handleCheckToken();
+				setEmail(email)
 				history.push("/");
 			})
 			.catch((err) => {
@@ -227,21 +231,21 @@ function App() {
 		<div>
 			<UserContext.Provider value={currentUser}>
 				<Switch>
-
-				<Route path="/signin">
-						<Header link={"/signup"} text={"Register"} />
+					<Route path="/signin">
+						<Header link={"/signup"} text={"Register"} userEmail={userEmail} />
 						<Login handleLogin={handleLogin} />
 					</Route>
 					<Route path="/signup">
-						<Header link={"/signin"} text={"Login"} />
+						<Header link={"/signin"} text={"Login"} userEmail={userEmail}/>
 						<Register handleRegistration={handleRegistration} />
 					</Route>
+
 					<ProtectedRoute
 						path="/"
 						component={Main}
 						isLoggedIn={isLoggedIn}
 						handleSignOut={handleSignOut}
-						email={email}
+						userEmail={userEmail}
 						cards={cards}
 						handleEditAvatarClick={handleEditAvatarClick}
 						handleEditProfileClick={handleEditProfileClick}
@@ -260,10 +264,6 @@ function App() {
 						handleCardLike={handleCardLike}
 						handleCardDelete={handleCardDelete}
 					/>
-									<Route path="*">
-						<Redirect to="./signin" />
-					</Route>
-					
 				</Switch>
 				<Footer />
 				{/*Add Card Component*/}

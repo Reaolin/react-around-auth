@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "./Card";
 import { UserContext } from "../contexts/CurrentUserContext";
-import Header from './Header';
+import Header from "./Header";
 
 function Main(props) {
 	const currentUser = React.useContext(UserContext);
@@ -13,7 +13,9 @@ function Main(props) {
 
 
 	return (
-		
+		<>
+		          <Header link={'/signin'} text={"Log out"} onClick={props.handleSignOut}>{props.userEmail}</Header>
+
 		<main className="main">
 			<section className="profile">
 				<div className="profile__avatar-container">
@@ -62,6 +64,7 @@ function Main(props) {
 				</ul>
 			</section>
 		</main>
+		</>
 	);
 }
 
