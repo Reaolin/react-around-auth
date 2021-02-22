@@ -3,7 +3,7 @@ import Card from "./Card";
 import { UserContext } from "../contexts/CurrentUserContext";
 import Header from "./Header";
 
-function Main(props, {userEmail}) {
+function Main(props) {
 	const currentUser = React.useContext(UserContext);
 
 	
@@ -47,9 +47,9 @@ function Main(props, {userEmail}) {
 			</section>
 			<section className="photo-container">
 				<ul className="photo-grid">
-					{props.cards.map((card, index) => (
+					{props.cards.map((card) => (
 						<Card
-							key={index}
+							key={card._id}
 							card={card}
 							src={card.link}
 							title={card.name}

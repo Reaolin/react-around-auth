@@ -32,7 +32,7 @@ function App() {
 	const [userEmail, setEmail] = React.useState("");
 	const [cardLink, setCardLink] = React.useState("");
 	const [cardTitle, setCardTitle] = React.useState("");
-	const [currentUser, setCurrentUser] = React.useState("");
+	const [currentUser, setCurrentUser] = React.useState({});
 
 	//creates handlers for opening popups
 	function handleEditAvatarClick() {
@@ -71,9 +71,7 @@ function App() {
 	//Calls the users info
 	React.useEffect(() => {
 		handleCheckToken();
-
-		history.push("/");
-	}, []);
+	},);
 
 	React.useEffect(() => {
 		api

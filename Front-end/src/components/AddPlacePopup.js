@@ -18,7 +18,9 @@ function AddPlacePopup(props) {
 		props.handleAddPlace({
 		  name: cardName,
 		  link: cardLink
-		});
+		},
+		setCardName(''),
+		setCardLink(''));
 	  }
 	return (
 		<PopupWithForm

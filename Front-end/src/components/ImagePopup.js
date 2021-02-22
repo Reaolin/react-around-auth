@@ -6,7 +6,7 @@ function ImagePopup(props) {
 			className={`modal modal_type_display-image ${
 				props.isOpen ? "modal_display" : " "
 			}`}
-			onClick={props.onClose}
+
 		>
 			<div className="modal__container">
 				<button className="modal__close link" onClick={props.onClose}></button>
