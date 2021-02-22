@@ -191,7 +191,8 @@ function App() {
 					if (res.err) {
 						console.log(res.err);
 					}
-					setEmail(res.data.email);
+					const usersEmail = res.data.email;
+					setEmail(usersEmail);
 					setIsLoggedIn(true);
 					setIsSuccessful(true);
 					history.push("/");
