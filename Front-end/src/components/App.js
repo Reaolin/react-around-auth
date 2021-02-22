@@ -45,9 +45,6 @@ function App() {
 	function handleAddPlaceClick() {
 		setIsAddPlaceOpen(true);
 	}
-	function handleEmailChange(e) {
-		setEmail(e.target.value);
-	}
 
 	//function handleDeleteClick() {
 	//	setIsDeleteOpen(true);
@@ -74,6 +71,7 @@ function App() {
 	//Calls the users info
 	React.useEffect(() => {
 		handleCheckToken();
+
 		history.push("/");
 	}, []);
 
@@ -196,8 +194,7 @@ function App() {
 					setEmail(res.data.email);
 					setIsLoggedIn(true);
 					setIsSuccessful(true);
-					history.push('/');
-					
+					history.push("/");
 				})
 				.catch((err) => console.log(err));
 		}
@@ -214,7 +211,7 @@ function App() {
 				}
 
 				handleCheckToken();
-				setEmail(email)
+				setEmail(email);
 				history.push("/");
 			})
 			.catch((err) => {
@@ -239,7 +236,7 @@ function App() {
 						<Login handleLogin={handleLogin} />
 					</Route>
 					<Route path="/signup">
-						<Header link={"/signin"} text={"Login"} userEmail={userEmail}/>
+						<Header link={"/signin"} text={"Login"} userEmail={userEmail} />
 						<Register handleRegistration={handleRegistration} />
 					</Route>
 
