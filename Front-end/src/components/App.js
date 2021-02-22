@@ -45,7 +45,9 @@ function App() {
 	function handleAddPlaceClick() {
 		setIsAddPlaceOpen(true);
 	}
-
+	function handleEmailChange(e) {
+		setEmail(e.target.value);
+	}
 
 	//function handleDeleteClick() {
 	//	setIsDeleteOpen(true);
@@ -71,25 +73,9 @@ function App() {
 
 	//Calls the users info
 	React.useEffect(() => {
-			const jwt = localStorage.getItem("jwt");
-			if (jwt) {
-				auth
-					.checkToken(jwt)
-					.then((res) => {
-						if (res.err) {
-							console.log(res.err);
-						}
-						setEmail(res.data.email);
-						setIsLoggedIn(true);
-						setIsSuccessful(true);
-						history.push('/');
-						
-					})
-					.catch((err) => console.log(err));
-			}
-		
+		handleCheckToken();
 		history.push("/");
-	}, [history]);
+	}, []);
 
 	React.useEffect(() => {
 		api
@@ -198,7 +184,24 @@ function App() {
 			.catch((err) => console.log(err));
 	}
 
-
+	function handleCheckToken() {
+		const jwt = localStorage.getItem("jwt");
+		if (jwt) {
+			auth
+				.checkToken(jwt)
+				.then((res) => {
+					if (res.err) {
+						console.log(res.err);
+					}
+					setEmail(res.data.email);
+					setIsLoggedIn(true);
+					setIsSuccessful(true);
+					history.push('/');
+					
+				})
+				.catch((err) => console.log(err));
+		}
+	}
 
 	function handleLogin(email, password) {
 		auth
@@ -209,6 +212,8 @@ function App() {
 					setIsSuccessful(false);
 					setIsInfoToolTipOpen(true);
 				}
+
+				handleCheckToken();
 				setEmail(email)
 				history.push("/");
 			})
