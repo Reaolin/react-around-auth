@@ -29,7 +29,7 @@ function App() {
 	const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 	const [isSuccessful, setIsSuccessful] = React.useState(false);
 
-	const [userEmail, setEmail] = React.useState("test");
+	const [userEmail, setEmail] = React.useState("");
 	const [cardLink, setCardLink] = React.useState("");
 	const [cardTitle, setCardTitle] = React.useState("");
 	const [currentUser, setCurrentUser] = React.useState("");
