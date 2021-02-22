@@ -8,7 +8,7 @@ function Header(props) {
 			<img src={Logo} className="logo" alt="Around US Logo" />
 			<div className="header__nav">
 			<p className="header__email">{props.userEmail}</p>
-			<Link className="header__link" to={props.link} onClick={props.onClick}>{props.text}</Link>
+			<Link className="header__link link" to={props.link} onClick={props.onClick}>{props.text}</Link>
 			</div>
 		</header>
 	);
